@@ -6,7 +6,7 @@ module Providers
       class << self
         def configure
           yield(base) if block_given?
-          base.update_configuration
+          base.set_auth
           base
         end
 
