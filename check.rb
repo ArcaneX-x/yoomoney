@@ -2,6 +2,7 @@
 module Providers
   module Yoomoney
     class Check
+      using Providers::Yoomoney::Superhash
       attr_reader :parsed_body
 
       def self.call(request_body)
@@ -11,12 +12,13 @@ module Providers
 
       def initialize(request_body)
         @parsed_body = Oj.load(request_body)
+        @parsed_body.define_accessors
       end
 
       def process_webhook
-        payment_id = parsed_body['object']['metadata']['payment_id']
-        key = parsed_body['object']['metadata']['key']
-        status = parsed_body['event']
+        payment_id = parsed_body.object.metadata.payment_id
+        key = parsed_body.object.metadata.key
+        status = parsed_body.event
         payment = Payment.find(payment_id)
 
         return unless payment.present? && payment.key == key
