@@ -12,12 +12,6 @@ module Providers
         set_auth
       end
 
-      def update_configuration
-        set_auth
-      end
-
-      private
-
       def set_auth
         @auth = "Basic #{Base64.strict_encode64("#{@shop_id}:#{@secret_key}")}"
       end
